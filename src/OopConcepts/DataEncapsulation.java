@@ -1,42 +1,54 @@
 package OopConcepts;
 
-/*Defn: it bundles data and the code working on that data in single unit.
- *     
- *     adv: data Hiding - Protects the internal state of an object from outside interference and misuse
- *     
- *     		increase flexibility -Allows the internal implementation of a class to change 
- *     								without affecting the code that uses the class.       
- */
-class Person {
-	private String name;
-	private int age;
+abstract class Banking{
+	private double balance;
 
-	public String getName() {
-		return name;
+	Banking(double initialBalance){
+		this.balance = initialBalance;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
-	public int getAge() {
-		return age;
+	public double getBalance() {
+		return balance;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	abstract void checkBalance();
+	abstract void transferMoney(double amount, String recepient);
+
+	void login(){
+		System.out.println("User login sucessfull");
 	}
 }
+class RuralBank extends Banking{
 
-public class DataEncapsulation {
-	public static void main(String argd[]){
-		
-		Person person = new Person();
-		
-		person.setName("Hari");
-		person.setAge(25);
-		
-		System.out.println("My name is: " + person.getName());
-		System.out.println("My Age is: " + person.getAge());
+	RuralBank(double initialBalance){
+		super(initialBalance);
+	}
+
+	@Override
+	void checkBalance() {
+		System.out.println("current balance " + getBalance());
+	}
+
+	@Override
+	void transferMoney(double amount, String recepient) {
+		if(amount > 0 && amount <= getBalance()){
+			setBalance(getBalance() - amount);
+			System.out.println("transferred "+ amount+" to " + recepient);
+		}else{
+			System.out.println("Insuffient balance");
+		}
+	}
+}
+public class DataEncapsulation{
+	public static void main(String[] args){
+		Banking myBank = new RuralBank(100000);
+		myBank.login();
+		myBank.checkBalance();
+		myBank.transferMoney(20000,"Hari");
+		myBank.checkBalance();
 	}
 }

@@ -1,17 +1,14 @@
 package MultiThreading;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class ThreadPool {
 	public static void main(String[] args) {
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(2,4,5,TimeUnit.MINUTES,new ArrayBlockingQueue<>(2),
-															new CustomThreadFactory(),new CustomRejectHandler());
-		executor.allowCoreThreadTimeOut(true);
-		
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(2,4,5,
+										TimeUnit.MINUTES,new ArrayBlockingQueue<>(2),
+										Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
+										executor.allowCoreThreadTimeOut(true);
+		//Creating 7 tasks
 		for(int i =1;i<=7;i++) {
 			executor.submit(()->{
 				try {
@@ -21,9 +18,7 @@ public class ThreadPool {
 				}
 				System.out.println("Task processed by:"+ Thread.currentThread().getName());
 			});
-			
 		}
-		
 			executor.shutdown();
 	}
 }

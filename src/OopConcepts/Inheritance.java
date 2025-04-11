@@ -1,62 +1,40 @@
 package OopConcepts;
-/*
- * defn: Inheritance is the mechanism by which sub class can inherit the fields and methods of super class. 
- * 
- * 		adv: This promotes code reusability.
- */
 
-class vehicle {
-	private String brand;
+abstract class Banks{
+	abstract void checkBalance();
+	abstract void transferMoney(double money, String recepient);
 
-	public vehicle(String brand) {
-
-		this.brand = brand;
+	void login(){
+		System.out.println("user logged in successfully");
 	}
-
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public void display() {
-		System.out.println("Welcome to " + brand);
+	void logOut(){
+		System.out.println("user logged out successfully");
 	}
 }
-
-class car extends vehicle {
-	private String model;
-
-	public car(String brand, String model) {
-		
-		super(brand);
-		this.model = model;
+class IndianBank extends Banks{
+	double balance = 10000;
+	@Override
+	void checkBalance() {
+		System.out.println("Current Balance: "+balance);
 	}
 
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
-	}
-
-	public void speed() {
-		System.out.println("the speed of " + getBrand() + " " + getModel() + " is 100kmph ");
+	@Override
+	void transferMoney(double money, String recepient) {
+		if(money > 0 && money <= balance){
+			balance -= money;
+			System.out.println("Transferred "+ money + " to "+ recepient);
+		}else{
+			System.out.println("Insuffient balance");
+		}
 	}
 }
-
-public class Inheritance {
-	public static void main(String args[]) {
-
-		vehicle vehicle = new vehicle("TATA");
-		car car = new car("TATA", "NEXON");
-
-		vehicle.display();
-		car.speed();
-
+public class Inheritance{
+	public static void main(String[] args){
+		Banks myBank = new IndianBank();
+		myBank.login();
+		myBank.checkBalance();
+		myBank.transferMoney(2500,"Hari");
+		myBank.checkBalance();
+		myBank.logOut();
 	}
-
 }
